@@ -31,6 +31,26 @@ Crea una funzione getPost(id) che recupera l'intero post. Concatena una seconda 
  recuperati dalla chiamata https://dummyjson.com/users/{post.userId}.
  */
 
+function getPost(id) {
+    const promessa = new Promise((resolve, reject) => {
+        fetch(`https://dummyjson.com/posts/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                fetch(`https://dummyjson.com/users/${data.userId}`)
+                    .then(res => res.json())
+                    .then(user => resolve({ ...data, user }))
+            })
+            .catch(reject)
+
+    })
+
+    return promessa
+}
+
+
+getPost(1)
+    .then(post => console.log('Questo è il post da lei ricercato :', post))
+    .catch(error => console.error(error))
 
 
 
